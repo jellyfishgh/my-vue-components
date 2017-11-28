@@ -1,10 +1,10 @@
 <template lang="pug">
-  router-view
+  div test
 </template>
-
 
 <script>
 export default {
-  name: 'app'
+  name: 'picker'
 }
 </script>
+
