@@ -3,22 +3,22 @@
     .weui-cells__title Picker
     .weui-cells
       picker(:items="[arr1, arr2]" @confirm="onPickerConfirm" ref="picker")
-      picker(:items="arr1" mult @confirm="onSinglePickerConfirm" ref="multPicker")
-      area-picker(@confirm="onDateConfirm" ref="areaPicker")
-      date-picker(@confirm="onAreaConfirm" ref="datePicker")
+      picker(:items="arr1" mult @confirm="onMultPickerConfirm" ref="multPicker")
+      //- area-picker(@confirm="onDateConfirm" ref="areaPicker")
+      //- date-picker(@confirm="onAreaConfirm" ref="datePicker")
 </template>
 
 <script>
 import Picker from '@/components/Picker'
-import AreaPicker from '@/components/AreaPicker'
-import DatePicker from '@/components/DatePicker'
+// import AreaPicker from '@/components/AreaPicker'
+// import DatePicker from '@/components/DatePicker'
 const createArr = arr => arr.map((text, value) => ({ text, value }))
 export default {
   name: 'page-picker',
   components: {
-    Picker,
-    AreaPicker,
-    DatePicker
+    Picker
+    // AreaPicker,
+    // DatePicker
   },
   data() {
     return {
@@ -27,13 +27,13 @@ export default {
     }
   },
   methods: {
-    onPickerConfirm({ indexs, labels, values }) {
-      console.log(indexs)
+    onPickerConfirm({ index, label, value }) {
+      console.log(index, label, value)
+    },
+    onMultPickerConfirm({ indexes, labels, values }) {
+      console.log(indexes)
       console.log(labels)
       console.log(values)
-    },
-    onSinglePickerConfirm({ index, label, value }) {
-      console.log(index, label, value)
     },
     onAreaConfirm({ province, city, area }) {
       console.log(`${province} ${city} ${area}`)
