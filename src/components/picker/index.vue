@@ -49,14 +49,12 @@ export default {
   },
   methods: {
     onConfirm(index) {
-      const {items, }
+      const { items } = this
       this.$emti('confirm', {
         index
       })
     },
-    showPicker() {
-
-    }
+    showPicker() {}
   }
 }
 </script>
