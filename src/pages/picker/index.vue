@@ -2,17 +2,23 @@
   .page
     .weui-cells__title Picker
     .weui-cells
-      picker(:items="[arr1, arr2]" @confirm="onPickerConfirm" ref="picker")
-      picker(:items="arr1" mult @confirm="onMultPickerConfirm" ref="multPicker")
-      //- area-picker(@confirm="onDateConfirm" ref="areaPicker")
-      //- date-picker(@confirm="onAreaConfirm" ref="datePicker")
+      picker(:items="arr1" title="字母" @confirm="onPickerConfirm")
+      picker(:items="arr1" title="字母" @confirm="onPickerConfirm" isDefault)
+      picker(:items="arr1" title="字母" @confirm="onPickerConfirm" value="value3")
+      picker(:items="arr1" title="字母" @confirm="onPickerConfirm" :index="2")
+      picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm")
+      picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault)
+      picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault spliter="-")
+      picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault lastVal)
+      //- area-picker(@confirm="onDateConfirm")
+      //- date-picker(@confirm="onAreaConfirm")
 </template>
 
 <script>
 import Picker from '@/components/Picker'
 // import AreaPicker from '@/components/AreaPicker'
 // import DatePicker from '@/components/DatePicker'
-const createArr = arr => arr.map((text, value) => ({ text, value }))
+const createArr = arr => arr.map((label, index) => ({ label, value: `value${index}` }))
 export default {
   name: 'page-picker',
   components: {

@@ -39,15 +39,18 @@ export default {
     }
   },
   created() {
-    const { pickerSelectedIndex } = this
-    if (!pickerSelectedIndex || pickerSelectedIndex.length === 0) {
-      this.pickerSelectedIndex = []
-      for (let i = 0; i < this.pickerData.length; i++) {
-        this.pickerSelectedIndex[i] = 0
-      }
-    }
+    this.initSelectedIndex()
   },
   methods: {
+    initSelectedIndex() {
+      const { pickerSelectedIndex } = this
+      if (!pickerSelectedIndex || pickerSelectedIndex.length === 0) {
+        this.pickerSelectedIndex = []
+        for (let i = 0; i < this.pickerData.length; i++) {
+          this.pickerSelectedIndex[i] = 0
+        }
+      }
+    },
     confirm() {
       if (!this._canConfirm()) {
         return
@@ -65,22 +68,12 @@ export default {
         if (this.pickerSelectedVal[i] !== value) {
           changed = true
         }
-        this.pickerSelectedLabel[i] = this.pickerData[i][index].text
+        this.pickerSelectedLabel[i] = this.pickerData[i][index].label
       }
 
-      this.$emit(
-        EVENT_SELECT,
-        this.pickerSelectedVal,
-        this.pickerSelectedIndex,
-        this.pickerSelectedText
-      )
+      this.$emit(EVENT_SELECT, this.pickerSelectedIndex)
       if (changed) {
-        this.$emit(
-          EVENT_VALUE_CHANGE,
-          this.pickerSelectedVal,
-          this.pickerSelectedIndex,
-          this.pickerSelectedText
-        )
+        this.$emit(EVENT_VALUE_CHANGE, this.pickerSelectedIndex)
       }
     },
     cancel() {
@@ -92,6 +85,7 @@ export default {
       else this.cancel()
     },
     show() {
+      this.initSelectedIndex()
       if (this.state === STATE_SHOW) {
         return
       }

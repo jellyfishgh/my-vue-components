@@ -1,5 +1,6 @@
 <template lang="pug">
-  container(:title="title" :placeholder="holder" @onClick="showPicker"): purepicker(:ref="ref" :data="data" :selectedIndex="selectedIndex" @select="onConfirm")
+  container(:title="title" :placeholder="holder" @onClick="showPicker")
+    pure-picker(ref="picker" :data="data" :selectedIndex="selectedIndex" @select="onConfirm")
 </template>
 
 <script>
@@ -15,9 +16,9 @@ export default {
     'mult',
     'index',
     'value',
-    'ref',
     'spliter',
-    'lastVal'
+    'lastVal',
+    'isDefault'
   ],
   components: {
     PurePicker,
@@ -30,23 +31,29 @@ export default {
     }
   },
   created() {
-    let { items = [], index = 0, value = '', mult } = this
+    let { items = [], index, value, mult, isDefault } = this
     if (mult) {
-      items.map((item, i) => {
-        if (value && value instanceof Array && value.length > 0) {
+      if (value && value instanceof Array && value.length > 0) {
+        index = []
+        items.map((item, i) => {
           const queryIndex = getIndexBy(item, value[i], 'value')
           if (queryIndex !== -1) index[i] = queryIndex
-          else index[i] = 0
-        } else {
-          index[i] = 0
-        }
-      })
+          else if (isDefault) index[i] = 0
+        })
+      } else if (!(index && index instanceof Array && index.length > 0)) {
+        index = []
+        items.map((item, i) => {
+          if (isDefault) index[i] = 0
+        })
+      }
     } else {
-      const queryIndex = getIndexBy(items, value, 'value')
-      if (queryIndex !== -1) index = queryIndex
+      if (value) {
+        const queryIndex = getIndexBy(items, value, 'value')
+        if (queryIndex !== -1) index = queryIndex
+        else if (isDefault) index = 0
+      } else if (index === undefined && isDefault) index = 0
       items = [items]
-      index = [index]
-      value = [value]
+      index = index === undefined ? [] : [index]
     }
     this.data = [...items]
     this.selectedIndex = [...index]
@@ -78,30 +85,29 @@ export default {
     }
   },
   methods: {
-    onConfirm(index) {
-      const { data, selectedIndex, mult } = this
+    onConfirm(confirmedIndexes) {
+      this.selectedIndex = confirmedIndexes.slice()
+      const { data, mult, selectedIndex } = this
       let result
       if (mult) {
-        const selectedItems = data.map(
-          (item, index) => item[selectedIndex[index]]
-        )
+        const selectedItems = data.map((item, i) => item[selectedIndex[i]])
         result = {
           indexes: selectedIndex,
           values: selectedItems.map(({ value }) => value),
           labels: selectedItems.map(({ label }) => label)
         }
       } else {
-        const selectItem = data[selectedIndex[0]]
+        const index = selectedIndex[0]
         result = {
-          index: selectedIndex[0],
-          ...selectItem
+          index,
+          ...data[0][index]
         }
       }
-      this.$emti('confirm', result)
+      this.$emit('confirm', result)
     },
     showPicker() {
-      const { $refs, ref, selectedIndex, data } = this
-      const picker = $refs[ref]
+      const { selectedIndex, data } = this
+      const { picker } = this.$refs
       picker.setData(data)
       picker.setSelectedIndex(selectedIndex)
       picker.show()

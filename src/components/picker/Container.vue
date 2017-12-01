@@ -3,6 +3,7 @@
     .weui-cell__hd: label.weui-label {{title}}
     .weui-cell__bd {{placeholder}}
     .weui-cell__ft
+    slot
 </template>
 
 <script>
