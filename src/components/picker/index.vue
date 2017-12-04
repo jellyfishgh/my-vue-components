@@ -1,6 +1,6 @@
 <template lang="pug">
   container(:title="title" :placeholder="holder" @onClick="showPicker")
-    pure-picker(ref="picker" :data="data" :selectedIndex="selectedIndex" @select="onConfirm")
+    pure-picker(ref="picker" :data="data" :selectedIndex="selectedIndex" @select="onConfirm" @change="onChange")
 </template>
 
 <script>
@@ -58,6 +58,12 @@ export default {
     this.data = [...items]
     this.selectedIndex = [...index]
   },
+  watch: {
+    items(value) {
+      this.data = [...value]
+      this.$refs.picker.refill(value)
+    }
+  },
   computed: {
     holder() {
       const {
@@ -85,6 +91,12 @@ export default {
     }
   },
   methods: {
+    onChange(i, newIndex) {
+      this.$emit('onChange', {
+        i,
+        newIndex
+      })
+    },
     onConfirm(confirmedIndexes) {
       this.selectedIndex = confirmedIndexes.slice()
       const { data, mult, selectedIndex } = this

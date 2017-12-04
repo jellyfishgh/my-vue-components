@@ -8,22 +8,25 @@
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm" :index="2")
       picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm")
       picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault)
+      picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" :value="['value0', 'value3']")
+      picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" :index="[1, 2]")
       picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault spliter="-")
       picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault lastVal)
-      //- area-picker(@confirm="onDateConfirm")
-      //- date-picker(@confirm="onAreaConfirm")
+      area-picker(@confirm="onAreaConfirm" isDefault)
+      area-picker(@confirm="onAreaConfirm")
+      //- date-picker(@confirm="onDateConfirm")
 </template>
 
 <script>
 import Picker from '@/components/Picker'
-// import AreaPicker from '@/components/AreaPicker'
+import AreaPicker from '@/components/Picker/AreaPicker'
 // import DatePicker from '@/components/DatePicker'
 const createArr = arr => arr.map((label, index) => ({ label, value: `value${index}` }))
 export default {
   name: 'page-picker',
   components: {
-    Picker
-    // AreaPicker,
+    Picker,
+    AreaPicker
     // DatePicker
   },
   data() {
