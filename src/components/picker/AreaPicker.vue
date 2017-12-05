@@ -5,6 +5,7 @@
 <script>
 import Picker from './index'
 import { provinceList, cityList, areaList } from './areaData'
+import { getIndexBy } from '@/utils/arr'
 export default {
   name: 'area-picker',
   components: {
@@ -19,12 +20,15 @@ export default {
   created() {
     const { provinceId, cityId, areaId, isDefault } = this
     if (provinceId) {
-      if (cityId) {
-        if (areaId) {
-          this.value = [provinceId, cityId, areaId]
-        } else {
+      const provinceIndex = getIndexBy(provinceList, provinceId)
+      if (provinceIndex !== -1 && cityId) {
+        const cityIndex = getIndexBy(cityList[provinceId], cityId)
+        if (cityIndex !== -1 && areaId) {
+          const areaIndex = getIndexBy(areaList[cityId], areaId)
+          if (areaIndex !== -1) {
+            this.index = [provinceIndex, cityIndex, areaIndex]
+          }
         }
-      } else {
       }
     } else {
       if (isDefault) {
@@ -35,9 +39,8 @@ export default {
   computed: {
     items() {
       const { index } = this
-      if (index.length === 0) return []
-      const cities = cityList[provinceList[index[0]].value]
-      const areas = areaList[cities[index[1]].value]
+      const cities = cityList[provinceList[index[0] || 0].value]
+      const areas = areaList[cities[index[1] || 0].value]
       return [provinceList, cities, areas]
     }
   },
@@ -50,13 +53,12 @@ export default {
         this.index.splice(i, 1, newIndex)
       }
     },
-    onConfirm(result) {
-      console.log(result)
-      const { $emit, items, index } = this
-      const province = items[index[0]]
-      const city = items[index[1]]
-      const area = items[index[2]]
-      $emit('confirm', {
+    onConfirm() {
+      const { items, index } = this
+      const province = items[0][index[0]]
+      const city = items[1][index[1]]
+      const area = items[2][index[2]]
+      this.$emit('confirm', {
         province,
         city,
         area

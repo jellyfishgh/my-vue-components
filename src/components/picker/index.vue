@@ -18,7 +18,8 @@ export default {
     'value',
     'spliter',
     'lastVal',
-    'isDefault'
+    'isDefault',
+    'changedIndex'
   ],
   components: {
     PurePicker,
@@ -61,7 +62,11 @@ export default {
   watch: {
     items(value) {
       this.data = [...value]
-      this.$refs.picker.refill(value)
+      const { picker } = this.$refs
+      for (let i = this.changedIndex + 1; i < value.length; i++) {
+        picker.scrollTo(i, 0)
+      }
+      picker.refill(value)
     }
   },
   computed: {

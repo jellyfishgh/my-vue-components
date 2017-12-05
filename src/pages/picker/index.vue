@@ -14,20 +14,26 @@
       picker(:items="[arr1, arr2]" title="代号" mult @confirm="onMultPickerConfirm" isDefault lastVal)
       area-picker(@confirm="onAreaConfirm" isDefault)
       area-picker(@confirm="onAreaConfirm")
-      //- date-picker(@confirm="onDateConfirm")
+      area-picker(@confirm="onAreaConfirm" provinceId="210000" cityId="210200" areaId="210204")
+      date-picker(@confirm="onDateConfirm")
+      date-picker(@confirm="onDateConfirm" isDefault)
+      date-picker(@confirm="onDateConfirm" date="2015-01-20")
+      date-picker(@confirm="onDateConfirm" date="2016-11-13" start="1992")
+      date-picker(@confirm="onDateConfirm" date="2010-11-13" end="2035")
+      date-picker(@confirm="onDateConfirm" date="2019-11-13" start="1992" end="2035")
 </template>
 
 <script>
 import Picker from '@/components/Picker'
 import AreaPicker from '@/components/Picker/AreaPicker'
-// import DatePicker from '@/components/DatePicker'
+import DatePicker from '@/components/Picker/DatePicker'
 const createArr = arr => arr.map((label, index) => ({ label, value: `value${index}` }))
 export default {
   name: 'page-picker',
   components: {
     Picker,
-    AreaPicker
-    // DatePicker
+    AreaPicker,
+    DatePicker
   },
   data() {
     return {
@@ -45,10 +51,10 @@ export default {
       console.log(values)
     },
     onAreaConfirm({ province, city, area }) {
-      console.log(`${province} ${city} ${area}`)
+      console.log(`${province.label} ${city.label} ${area.label}`)
     },
-    onDateConfirm({ year, month, date }) {
-      console.log(`${year}-${month}=${date}`)
+    onDateConfirm(dateStr) {
+      console.log(dateStr)
     }
   }
 }
