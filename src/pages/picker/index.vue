@@ -2,6 +2,7 @@
   .page
     .weui-cells__title Picker
     .weui-cells
+      picker(:items="[]" title="字母" @empty="emptyHandler")
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm")
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm" isDefault)
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm" value="value3")
@@ -42,6 +43,9 @@ export default {
     }
   },
   methods: {
+    emptyHandler() {
+      console.log('字母items为空')
+    },
     onPickerConfirm({ index, label, value }) {
       console.log(index, label, value)
     },

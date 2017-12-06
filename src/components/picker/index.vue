@@ -124,10 +124,14 @@ export default {
     },
     showPicker() {
       const { selectedIndex, data } = this
-      const { picker } = this.$refs
-      picker.setData(data)
-      picker.setSelectedIndex(selectedIndex)
-      picker.show()
+      if (data && data[0] && data[0].length > 0) {
+        const { picker } = this.$refs
+        picker.setData(data)
+        picker.setSelectedIndex(selectedIndex)
+        picker.show()
+      } else {
+        this.$emit('empty')
+      }
     }
   }
 }
