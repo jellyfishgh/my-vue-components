@@ -1,6 +1,6 @@
 <template lang="pug">
   container(:title="title" :placeholder="holder" @onClick="showPicker" :position="position === 'right' ? 'right' : 'center'" :small="small" :ft="ft")
-    pure-picker(ref="picker" :data="data" :selectedIndex="selectedIndex" @select="onConfirm" @change="onChange")
+    pure-picker(ref="picker" :data="data" :selectedIndex="selectedIndex" @select="onConfirm" @change="onChange" @cancel="onCancel")
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       data: [[]],
-      selectedIndex: [[]]
+      selectedIndex: []
     }
   },
   created() {
@@ -62,11 +62,12 @@ export default {
       if (data.length > 0 && selectedIndex.length > 0) {
         if (lastVal) {
           label =
-            data[data.length - 1][selectedIndex[selectedIndex.length - 1]].label
+            data[data.length - 1][selectedIndex[selectedIndex.length - 1] || 0]
+              .label
         } else {
           label = data
             .map((item, index) => {
-              return item[selectedIndex[index]].label
+              return item[selectedIndex[index] || 0].label
             })
             .join(spliter)
         }
@@ -104,10 +105,10 @@ export default {
       this.selectedIndex = [...index]
     },
     onChange(i, newIndex) {
-      this.$emit('onChange', {
-        i,
-        newIndex
-      })
+      this.$emit('onChange', { i, newIndex })
+    },
+    onCancel() {
+      this.$emit('cancel')
     },
     onConfirm(confirmedIndexes) {
       this.selectedIndex = confirmedIndexes.slice()

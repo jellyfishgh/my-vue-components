@@ -1,6 +1,6 @@
 <template lang="pug">
   div(v-if="state === STATE_SHOW")
-    .weui-mask.weui-animate-fade-in(@click.stop="hide")
+    .weui-mask.weui-animate-fade-in(@click.stop="onClick(0)")
     .weui-picker.weui-animate-slide-up(@click.stop="() => false")
       .weui-picker__hd
         each val, index in ['取消', '确认']

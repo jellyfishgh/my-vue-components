@@ -1,5 +1,5 @@
 <template lang="pug">
-  picker(:items="items" :index="index" title="日期" mult @confirm="onConfirm" @onChange="onChange" :isDefault="isDefault" :changedIndex="changedIndex" :spliter="mySpliter")
+  picker(:items="items" :index="index" title="日期" mult @cancel="onCancel" @confirm="onConfirm" @onChange="onChange" :isDefault="isDefault" :changedIndex="changedIndex" :spliter="mySpliter")
 </template>
 
 <script>
@@ -34,27 +34,7 @@ export default {
     }
   },
   created() {
-    const { date, start, end, isDefault } = this
-    const currentYear = now.getFullYear()
-    let min = currentYear - 100
-    let max = currentYear + 100
-    start && (min = parseInt(start, 10))
-    end && (max = parseInt(end, 10))
-    this.ys = createArr(max + 1, min)
-    const ymd = createYmd(date)
-    if (ymd) {
-      const yearIndex = getIndexBy(this.ys, ymd[0])
-      if (yearIndex !== -1) {
-        this.index = [yearIndex, ymd[1] - 1, ymd[2] - 1]
-      }
-    } else if (isDefault) {
-      const yearIndex = getIndexBy(this.ys, currentYear)
-      if (yearIndex !== -1) {
-        this.index = [yearIndex, now.getMonth(), now.getDate() - 1]
-      } else {
-        this.index = [0, 0, 0]
-      }
-    }
+    this.init()
   },
   computed: {
     items() {
@@ -71,6 +51,32 @@ export default {
     }
   },
   methods: {
+    onCancel() {
+      this.init()
+    },
+    init() {
+      const { date, start, end, isDefault } = this
+      const currentYear = now.getFullYear()
+      let min = currentYear - 100
+      let max = currentYear + 100
+      start && (min = parseInt(start, 10))
+      end && (max = parseInt(end, 10))
+      this.ys = createArr(max + 1, min)
+      const ymd = createYmd(date)
+      if (ymd) {
+        const yearIndex = getIndexBy(this.ys, ymd[0])
+        if (yearIndex !== -1) {
+          this.index = [yearIndex, ymd[1] - 1, ymd[2] - 1]
+        }
+      } else if (isDefault) {
+        const yearIndex = getIndexBy(this.ys, currentYear)
+        if (yearIndex !== -1) {
+          this.index = [yearIndex, now.getMonth(), now.getDate() - 1]
+        } else {
+          this.index = [0, 0, 0]
+        }
+      }
+    },
     onChange({ i, newIndex }) {
       this.changedIndex = i
       if (newIndex !== this.index[i]) {
