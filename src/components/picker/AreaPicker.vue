@@ -1,5 +1,5 @@
 <template lang="pug">
-  picker(:items="items" :index="index" title="地区" mult @confirm="onConfirm" @onChange="onChange" :isDefault="isDefault")
+  picker(:items="items" :index="index" title="地区" mult @confirm="onConfirm" @onChange="onChange" :isDefault="isDefault" :position="position" :small="small")
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
   components: {
     Picker
   },
-  props: ['provinceId', 'cityId', 'areaId', 'isDefault'],
+  props: ['provinceId', 'cityId', 'areaId', 'isDefault', 'position', 'small'],
   data() {
     return {
       index: []
@@ -55,9 +55,9 @@ export default {
     },
     onConfirm() {
       const { items, index } = this
-      const province = items[0][index[0]]
-      const city = items[1][index[1]]
-      const area = items[2][index[2]]
+      const province = items[0][index[0] || 0]
+      const city = items[1][index[1] || 0]
+      const area = items[2][index[2] || 0]
       this.$emit('confirm', {
         province,
         city,

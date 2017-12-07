@@ -1,5 +1,5 @@
 <template lang="pug">
-  container(:title="title" :placeholder="holder" @onClick="showPicker")
+  container(:title="title" :placeholder="holder" @onClick="showPicker" :position="position === 'right' ? 'right' : 'center'" :small="small" :ft="ft")
     pure-picker(ref="picker" :data="data" :selectedIndex="selectedIndex" @select="onConfirm" @change="onChange")
 </template>
 
@@ -12,6 +12,9 @@ export default {
   props: [
     'title',
     'placeholder',
+    'position',
+    'small',
+    'ft',
     'items',
     'mult',
     'index',
@@ -74,6 +77,7 @@ export default {
       const {
         title,
         placeholder,
+        ft,
         data,
         selectedIndex,
         spliter = ' ',
@@ -92,7 +96,7 @@ export default {
             .join(spliter)
         }
       }
-      return label || placeholder || `请选择${title}`
+      return label || placeholder || (ft ? '' : `请选择${title}`)
     }
   },
   methods: {
