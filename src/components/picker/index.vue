@@ -35,41 +35,16 @@ export default {
     }
   },
   created() {
-    let { items = [], index, value, mult, isDefault } = this
-    if (mult) {
-      if (value && value instanceof Array && value.length > 0) {
-        index = []
-        items.map((item, i) => {
-          const queryIndex = getIndexBy(item, value[i], 'value')
-          if (queryIndex !== -1) index[i] = queryIndex
-          else if (isDefault) index[i] = 0
-        })
-      } else if (!(index && index instanceof Array && index.length > 0)) {
-        index = []
-        items.map((item, i) => {
-          if (isDefault) index[i] = 0
-        })
-      }
-    } else {
-      if (value) {
-        const queryIndex = getIndexBy(items, value, 'value')
-        if (queryIndex !== -1) index = queryIndex
-        else if (isDefault) index = 0
-      } else if (index === undefined && isDefault) index = 0
-      items = [items]
-      index = index === undefined ? [] : [index]
-    }
-    this.data = [...items]
-    this.selectedIndex = [...index]
+    this.init()
   },
   watch: {
     items(value) {
-      this.data = [...value]
+      this.init()
       const { picker } = this.$refs
       for (let i = this.changedIndex + 1; i < value.length; i++) {
         picker.scrollTo(i, 0)
       }
-      picker.refill(value)
+      picker.state === picker.STATE_SHOW && picker.refill(value)
     }
   },
   computed: {
@@ -100,6 +75,34 @@ export default {
     }
   },
   methods: {
+    init() {
+      let { items = [], index, value, mult, isDefault } = this
+      if (mult) {
+        if (value && value instanceof Array && value.length > 0) {
+          index = []
+          items.map((item, i) => {
+            const queryIndex = getIndexBy(item, value[i], 'value')
+            if (queryIndex !== -1) index[i] = queryIndex
+            else if (isDefault) index[i] = 0
+          })
+        } else if (!(index && index instanceof Array && index.length > 0)) {
+          index = []
+          items.map((item, i) => {
+            if (isDefault) index[i] = 0
+          })
+        }
+      } else {
+        if (value) {
+          const queryIndex = getIndexBy(items, value, 'value')
+          if (queryIndex !== -1) index = queryIndex
+          else if (isDefault) index = 0
+        } else if (index === undefined && isDefault) index = 0
+        items = [items]
+        index = index === undefined ? [] : [index]
+      }
+      this.data = [...items]
+      this.selectedIndex = [...index]
+    },
     onChange(i, newIndex) {
       this.$emit('onChange', {
         i,

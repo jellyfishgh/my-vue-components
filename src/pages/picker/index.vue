@@ -4,7 +4,7 @@
     .weui-cells
       picker(:items="[]" title="字母" @empty="emptyHandler")
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm")
-      picker(:items="arr1" title="字母" @confirm="onPickerConfirm" position="center" ft="请选择" small)
+      picker(:items="arr1" title="字母" @confirm="onPickerConfirm" ft="请选择" small)
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm" position="center" ft="请选择")
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm" placeholder="请选择" position="right")
       picker(:items="arr1" title="字母" @confirm="onPickerConfirm" placeholder="请选择" position="right" small)
