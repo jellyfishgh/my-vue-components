@@ -1,7 +1,7 @@
 {
   "name": "my-vue-components",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "vue components powered by weui",
   "author": "hemu",
   "private": true,
   "scripts": {
